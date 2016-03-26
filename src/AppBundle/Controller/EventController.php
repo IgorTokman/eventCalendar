@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Event;
+use AppBundle\Entity\Category;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,8 +15,12 @@ class EventController extends Controller
      */
     public function indexAction(Request $request)
     {
-        return $this->render('event/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..'),
+        $events = $this->getDoctrine()
+            ->getRepository('AppBundle:Event')
+            ->findAll();
+
+        return $this->render('event/index.html.twig',[
+            'events' => $events
         ]);
     }
     /**
