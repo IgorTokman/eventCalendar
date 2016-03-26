@@ -15,13 +15,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>Category 1</td>
-                    <td>
-                        <a class="btn btn-default" href="/category/edit/1">Edit</a>
-                        <a class="btn btn-danger" href="/category/delete/1">Delete</a>
-                    </td>
-                </tr>
+                {% for category in categories %}
+
+                    <tr>
+                        <td>{{ category.name }}</td>
+                        <td>
+                            <a class="btn btn-default" href="/category/edit/{{ category.id }}">Edit</a>
+                            <a class="btn btn-danger" href="/category/delete/{{ category.id }}">Delete</a>
+                        </td>
+
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>
