@@ -97,7 +97,7 @@ class CategoryController extends Controller
             $category->setName($name);
 
             $em->flush();
-            $this->addFlash('notice','Category Edit');
+            $this->addFlash('notice','Category Edited');
 
             return $this->redirectToRoute('category_list');
         }
@@ -110,11 +110,20 @@ class CategoryController extends Controller
     /**
      * @Route("/category/delete/{id}", name="category_delete")
      */
-    public function deleteAction(Request $request)
+    public function deleteAction($id)
     {
-        return $this->render('category/delete.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..'),
-        ]);
+        $em = $this->getDoctrine()->getManager();
+        $category = $em->getRepository("AppBundle:Category")->find($id);
+
+        if(!$category)
+            throw new $this->createNotFoundException("No category found for id");
+
+        $em->remove($category);
+        $em->flush();
+
+        $this->addFlash('notice','Category Deleted');
+
+        return $this->redirectToRoute('category_list');
     }
 
 }

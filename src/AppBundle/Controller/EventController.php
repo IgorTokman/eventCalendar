@@ -156,7 +156,7 @@ class EventController extends Controller
             $event->setDetails($details);
 
             $em->flush();
-            $this->addFlash('notice','Event Saved');
+            $this->addFlash('notice','Event Edited');
 
             return $this->redirectToRoute('event_list');
         }
@@ -169,10 +169,19 @@ class EventController extends Controller
     /**
      * @Route("/event/delete/{id}", name="event_delete")
      */
-    public function deleteAction(Request $request)
+    public function deleteAction($id)
     {
-        return $this->render('event/delete.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..'),
-        ]);
+        $em = $this->getDoctrine()->getManager();
+        $event = $em->getRepository("AppBundle:Event")->find($id);
+
+        if(!$event)
+            throw new $this->createNotFoundException("No event found for id");
+
+        $em->remove($event);
+        $em->flush();
+
+        $this->addFlash('notice','Event Deleted');
+
+        return $this->redirectToRoute('event_list');
     }
 }
