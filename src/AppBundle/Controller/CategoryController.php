@@ -46,6 +46,8 @@ class CategoryController extends Controller
         //Check Submit
         if($form->isSubmitted() && $form->isValid()){
             $name = $form['name']->getData();
+
+            //get current date and time
             $date = new \DateTime('now');
 
             $category->setName($name);

@@ -95,7 +95,7 @@ class Event
      *
      * @return Event
      */
-    public function setCategoryId($category)
+    public function setCategory($category)
     {
         $this->category = $category;
 
