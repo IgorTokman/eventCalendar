@@ -4,7 +4,7 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Welcome</h3>
+            <h3 class="panel-title">Events</h3>
         </div>
         <div class="panel-body">
             <table class="table table-striped">
@@ -23,8 +23,8 @@
                     <td>{{ event.category.name }}</td>
                     <td>{{ event.day | date('F j, Y, g:i a')}}</td>
                     <td>
-                        <a class="btn btn-default" href="/category/edit/{{ event.id }}">Edit</a>
-                        <a class="btn btn-danger" href="/category/delete/{{ event.id }}">Delete</a>
+                        <a class="btn btn-default" href="/event/edit/{{ event.id }}">Edit</a>
+                        <a class="btn btn-danger" href="/event/delete/{{ event.id }}">Delete</a>
                     </td>
                 </tr>
                 {% endfor %}

@@ -47,7 +47,7 @@ class CategoryController extends Controller
         if($form->isSubmitted() && $form->isValid()){
             $name = $form['name']->getData();
 
-            //get current date and time
+            //Get current date and time
             $date = new \DateTime('now');
 
             $category->setName($name);
@@ -70,10 +70,41 @@ class CategoryController extends Controller
     /**
      * @Route("/category/edit/{id}", name="category_edit")
      */
-    public function editAction(Request $request)
+    public function editAction($id, Request $request)
     {
-        return $this->render('category/edit.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..'),
+        $category = $this->getDoctrine()->getRepository('AppBundle:Category')->find($id);
+
+        if(!$category)
+            throw $this->createNotFoundException("No Category found for id");
+
+        $category->setName($category->getName());
+
+        $form = $this->createFormBuilder($category)
+            ->add('name', TextType::class,
+                array('attr' => array('class' => 'form-control', 'style' =>'margin-bottom: 15px')))
+            ->add('save', SubmitType::class,
+                array('label' => 'Edit Category', 'attr' => array('class' => 'btn btn-primary')))
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        //Check Submit
+        if($form->isSubmitted() && $form->isValid()){
+            $name = $form['name']->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $category = $em->getRepository('AppBundle:Category')->find($id);
+            $category->setName($name);
+
+            $em->flush();
+            $this->addFlash('notice','Category Edit');
+
+            return $this->redirectToRoute('category_list');
+        }
+
+        //Render Template
+        return $this->render('category/edit.html.twig',[
+            'form' =>  $form->createView()
         ]);
     }
     /**
