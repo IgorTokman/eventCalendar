@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class CategoryController extends Controller
 {
     /**
+     * Displays the category list
      * @Route("/categories", name="category_list")
      */
     public function indexAction(Request $request)
@@ -27,7 +28,9 @@ class CategoryController extends Controller
             'categories' => $categories
         ]);
     }
+
     /**
+     * Shows the creation form
      * @Route("/category/create", name="category_create")
      */
     public function createAction(Request $request)
@@ -43,11 +46,11 @@ class CategoryController extends Controller
 
         $form->handleRequest($request);
 
-        //Check Submit
+        //Checks Submit
         if($form->isSubmitted() && $form->isValid()){
             $name = $form['name']->getData();
 
-            //Get current date and time
+            //Gets current date and time
             $date = new \DateTime('now');
 
             $category->setName($name);
@@ -62,12 +65,14 @@ class CategoryController extends Controller
             return $this->redirectToRoute('category_list');
         }
 
-        //Render Template
+        //Renders Template
         return $this->render('category/create.html.twig',[
             'form' =>  $form->createView()
         ]);
     }
+
     /**
+     * Realizes the category updating
      * @Route("/category/edit/{id}", name="category_edit")
      */
     public function editAction($id, Request $request)
@@ -88,7 +93,7 @@ class CategoryController extends Controller
 
         $form->handleRequest($request);
 
-        //Check Submit
+        //Checks Submit
         if($form->isSubmitted() && $form->isValid()){
             $name = $form['name']->getData();
 
@@ -102,12 +107,14 @@ class CategoryController extends Controller
             return $this->redirectToRoute('category_list');
         }
 
-        //Render Template
+        //Renders Template
         return $this->render('category/edit.html.twig',[
             'form' =>  $form->createView()
         ]);
     }
+    
     /**
+     * Performs the category deleting
      * @Route("/category/delete/{id}", name="category_delete")
      */
     public function deleteAction($id)

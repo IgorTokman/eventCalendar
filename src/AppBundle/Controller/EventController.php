@@ -18,6 +18,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 class EventController extends Controller
 {
     /**
+     * Renders the event list
      * @Route("/events", name="event_list")
      */
     public function indexAction(Request $request)
@@ -30,7 +31,9 @@ class EventController extends Controller
             'events' => $events
         ]);
     }
+    
     /**
+     * Realizes the event creation
      * @Route("/event/create", name="event_create")
      */
     public function createAction(Request $request)
@@ -58,7 +61,7 @@ class EventController extends Controller
 
         $form->handleRequest($request);
 
-        //Check Submit
+        //Checks Submit
         if($form->isSubmitted() && $form->isValid()){
             $name = $form['name']->getData();
             $category = $form['category']->getData();
@@ -68,7 +71,7 @@ class EventController extends Controller
             $zipcode = $form['zipcode']->getData();
             $day = $form['day']->getData();
 
-            //Get current date and time
+            //Gets current date and time
             $date = new \DateTime('now');
 
             $event->setName($name);
@@ -89,12 +92,14 @@ class EventController extends Controller
             return $this->redirectToRoute('event_list');
         }
 
-        //Render Template
+        //Renders Template
         return $this->render('event/create.html.twig',[
             'form' =>  $form->createView()
         ]);
     }
+    
     /**
+     * Performs the event updating
      * @Route("/event/edit/{id}", name="event_edit")
      */
     public function editAction($id, Request $request)
@@ -134,7 +139,7 @@ class EventController extends Controller
 
         $form->handleRequest($request);
 
-        //Check Submit
+        //Checks Submit
         if($form->isSubmitted() && $form->isValid()){
             $name = $form['name']->getData();
             $category = $form['category']->getData();
@@ -161,12 +166,14 @@ class EventController extends Controller
             return $this->redirectToRoute('event_list');
         }
 
-        //Render Template
+        //Renders Template
         return $this->render('event/edit.html.twig',[
             'form' =>  $form->createView()
         ]);
     }
+    
     /**
+     * Implements the event deleting
      * @Route("/event/delete/{id}", name="event_delete")
      */
     public function deleteAction($id)
